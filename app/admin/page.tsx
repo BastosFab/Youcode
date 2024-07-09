@@ -1,12 +1,12 @@
 import {
+  Layout,
   LayoutContent,
   LayoutHeader,
   LayoutTitle,
 } from "@/components/layout/layout";
-import { Layout } from "lucide-react";
 import Link from "next/link";
 
-export default function AdminPage() {
+export default function page() {
   return (
     <Layout>
       <LayoutHeader>
