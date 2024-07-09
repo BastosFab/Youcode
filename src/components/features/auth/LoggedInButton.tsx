@@ -55,16 +55,12 @@ export const LoggedInButton = (props: LoggedInButtonProps) => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56">
-          <DropdownMenuLabel>My Account</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuGroup>
-            <DropdownMenuItem>
-              <Link href={"/account"} className="flex items-center">
-                <User2 className="mr-2" size={12} />
-                Profile
-              </Link>
-            </DropdownMenuItem>
-          </DropdownMenuGroup>
+          <DropdownMenuItem>
+            <Link href={"/account"} className="flex items-center">
+              <User2 className="mr-2" size={12} />
+              Account
+            </Link>
+          </DropdownMenuItem>
           <DropdownMenuSeparator />
           <AlertDialogTrigger asChild>
             <DropdownMenuItem>
