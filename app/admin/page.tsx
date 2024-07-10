@@ -6,7 +6,7 @@ import {
 } from "@/components/layout/layout";
 import Link from "next/link";
 
-export default function page() {
+export default function AdminPage() {
   return (
     <Layout>
       <LayoutHeader>

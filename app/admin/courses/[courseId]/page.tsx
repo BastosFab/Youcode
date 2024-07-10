@@ -66,7 +66,7 @@ export default async function CoursePage({
                 {course.users?.map((user) => (
                   <TableRow>
                     <TableCell className="font-medium">
-                      <Avatar className="rounded">
+                      <Avatar className="rounded-full">
                         <AvatarFallback>{user.name?.[0]}</AvatarFallback>
                         {user.image && (
                           <AvatarImage
