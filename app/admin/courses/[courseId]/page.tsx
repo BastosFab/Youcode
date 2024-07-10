@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/table";
 import { getRequiredAuthSession } from "@/lib/auth";
 import Link from "next/link";
-import { getCourse } from "./course.query";
+import { getAdminCourse } from "./course.query";
 import { PaginationButton } from "@/components/features/pagination/PaginationButton";
 
 export default async function CoursePage({
@@ -32,7 +32,7 @@ export default async function CoursePage({
 
   const session = await getRequiredAuthSession();
 
-  const course = await getCourse({
+  const course = await getAdminCourse({
     courseId: params.courseId,
     userId: session.user.id,
     userPage: page,

@@ -17,9 +17,19 @@ export function Header() {
             height={35}
             alt="app logo"
           />
-          <Typography variant="h3" as={Link} href="/">
-            {SiteConfig.title}
-          </Typography>
+          <div className="flex items-baseline gap-2">
+            <Typography variant="h3" as={Link} href="/">
+              {SiteConfig.title}
+            </Typography>
+            <Typography
+              as={Link}
+              variant="link"
+              href="/explorer"
+              className="text-muted-foreground hover:text-foreground"
+            >
+              Explorer
+            </Typography>
+          </div>
         </div>
 
         <div className="flex flex-1 items-center justify-end space-x-4">

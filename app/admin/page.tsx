@@ -10,7 +10,7 @@ export default function AdminPage() {
   return (
     <Layout>
       <LayoutHeader>
-        <LayoutTitle>Courses</LayoutTitle>
+        <LayoutTitle>Admin</LayoutTitle>
       </LayoutHeader>
       <LayoutContent>
         <Link href="/admin/courses">Courses</Link>
