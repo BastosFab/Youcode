@@ -1,6 +1,6 @@
 import { getAuthSession, getRequiredAuthSession } from "@/lib/auth";
 import React from "react";
-import { getCourses } from "./course.query";
+import { getCourses } from "./courses.query";
 import {
   Layout,
   LayoutContent,

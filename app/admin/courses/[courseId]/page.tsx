@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/table";
 import { getRequiredAuthSession } from "@/lib/auth";
 import Link from "next/link";
-import { getAdminCourse } from "./course.query";
+import { getAdminCourse } from "./admin-course.query";
 import { PaginationButton } from "@/components/features/pagination/PaginationButton";
 
 export default async function CoursePage({
