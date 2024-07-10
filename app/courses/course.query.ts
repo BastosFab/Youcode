@@ -1,7 +1,7 @@
 import prisma from "@/lib/prisma";
 import { Prisma } from "@prisma/client";
 
-export const getCourses = async ({ userId }: { userId?: string }) => {
+export const getCourses = async (userId?: string) => {
   return await prisma.course.findMany({
     where: userId
       ? {

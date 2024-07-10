@@ -10,7 +10,7 @@ import { getCourses } from "../courses/course.query";
 
 export default async function ExplorerPage() {
   const session = await getRequiredAuthSession();
-  const courses = await getCourses({ userId: session.user.id });
+  const courses = await getCourses();
   return (
     <Layout>
       <LayoutHeader>
