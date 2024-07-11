@@ -14,44 +14,50 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { edtiCourseAction } from "./edit-course.action";
-import { EditCourseSchema } from "./edit-course.schema";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
+import { CourseSchema, CourseSchemaType } from "./course.schema";
+import { courseActionEdit, courseActionCreate } from "./course.action";
 
 export type EditCourseFormProps = {
-  defaultValues?: EditCourseSchema & {
+  defaultValues?: CourseSchemaType & {
     id: string;
   };
 };
 
-export const EditCourseForm = ({ defaultValues }: EditCourseFormProps) => {
+export const CourseForm = ({ defaultValues }: EditCourseFormProps) => {
   const form = useZodForm({
-    schema: EditCourseSchema,
+    schema: CourseSchema,
     defaultValues: defaultValues,
   });
 
   const router = useRouter();
 
   const mutation = useMutation({
-    mutationFn: async (data: EditCourseSchema) => {
-      const result: EditCourseSchema = {
+    mutationFn: async (data: CourseSchemaType) => {
+      const fixedData: CourseSchemaType = {
         ...data,
       };
 
       try {
-        if (!defaultValues?.id) {
-          throw new Error("No course found");
+        const { data, serverError } = defaultValues?.id
+          ? await courseActionEdit({
+              courseId: defaultValues.id,
+              data: fixedData,
+            })
+          : await courseActionCreate(fixedData);
+
+        if (data) {
+          toast.success(data.message);
+          router.push(`/admin/courses/${data.course.id}`);
+          router.refresh();
+          return;
+        } else {
+          toast.error("Some error happened", {
+            description: serverError,
+          });
         }
-        await edtiCourseAction({
-          courseId: defaultValues.id,
-          data: result,
-        });
-        toast.success("Course updated successfully");
-        router.push(`/admin/courses/${defaultValues?.id}`);
-        router.refresh();
-        return;
       } catch {
         toast.error("Something went wrong");
       }
@@ -63,10 +69,9 @@ export const EditCourseForm = ({ defaultValues }: EditCourseFormProps) => {
       <CardContent className="mt-6">
         <Form
           form={form}
+          className="flex flex-col gap-4"
           onSubmit={async (values) => {
-            if (defaultValues?.id) {
-              mutation.mutate(values);
-            }
+            mutation.mutate(values);
           }}
         >
           <FormField
@@ -78,9 +83,6 @@ export const EditCourseForm = ({ defaultValues }: EditCourseFormProps) => {
                 <FormControl>
                   <Input placeholder="https://image-url.com" {...field} />
                 </FormControl>
-                <FormDescription>
-                  This is your public display name.
-                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -105,8 +107,9 @@ export const EditCourseForm = ({ defaultValues }: EditCourseFormProps) => {
               <FormItem>
                 <FormLabel>Presentation</FormLabel>
                 <FormControl>
-                  <Textarea placeholder="..." {...field} />
+                  <Textarea placeholder="## Some markdown" {...field} />
                 </FormControl>
+                <FormDescription>Markdown is supported.</FormDescription>
                 <FormMessage />
               </FormItem>
             )}

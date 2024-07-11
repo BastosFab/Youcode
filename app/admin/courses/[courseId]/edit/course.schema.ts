@@ -1,7 +1,7 @@
 import { Presentation } from "lucide-react";
 import { z } from "zod";
 
-export const EditCourseSchema = z.object({
+export const CourseSchema = z.object({
   image: z.string().url(),
   name: z
     .string()
@@ -14,4 +14,4 @@ export const EditCourseSchema = z.object({
   presentation: z.string(),
 });
 
-export type EditCourseSchema = z.infer<typeof EditCourseSchema>;
+export type CourseSchemaType = z.infer<typeof CourseSchema>;

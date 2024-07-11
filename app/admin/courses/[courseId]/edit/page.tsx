@@ -8,7 +8,7 @@ import {
 import { getRequiredAuthSession } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import { notFound } from "next/navigation";
-import { EditCourseForm } from "./EditCourseForm";
+import { CourseForm } from "./CourseForm";
 
 export default async function EditCoursePage({
   params,
@@ -44,7 +44,7 @@ export default async function EditCoursePage({
         <LayoutTitle>Edit course</LayoutTitle>
       </LayoutHeader>
       <LayoutContent>
-        <EditCourseForm defaultValues={course} />
+        <CourseForm defaultValues={course} />
       </LayoutContent>
     </Layout>
   );
