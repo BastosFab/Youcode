@@ -1,7 +1,7 @@
 "use client";
 
-import { Breadcrumb } from "@/components/features/breadcrumb/Breadcrumb";
-import { BackButton } from "@/components/features/button/BackButton";
+import { Breadcrumb } from "@/components/utils/Breadcrumb";
+import { BackButton } from "@/components/utils/BackButton";
 import { useRouter } from "next/navigation";
 import { PropsWithChildren } from "react";
 

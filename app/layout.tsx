@@ -8,7 +8,7 @@ import { Inter } from "next/font/google";
 import { PropsWithChildren } from "react";
 import { Providers } from "./Providers";
 import "./globals.css";
-import { TailwindIndicator } from "@/components/TailwindIndicator";
+import { TailwindIndicator } from "@/components/utils/TailwindIndicator";
 
 const fontSans = Inter({ subsets: ["latin"], variable: "--font-sans" });
 

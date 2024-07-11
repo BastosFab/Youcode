@@ -1,13 +1,14 @@
+import { SubmitButton } from "@/components/form/SubmitButton";
 import {
   Layout,
   LayoutContent,
   LayoutHeader,
   LayoutTitle,
 } from "@/components/layout/layout";
-import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getRequiredAuthSession } from "@/lib/auth";
-import Link from "next/link";
+import prisma from "@/lib/prisma";
+import { redirect } from "next/navigation";
 import { AdminLessonItem } from "./AdminLessonItem";
 import { getCourseLessons } from "./lessons.query";
 
@@ -39,12 +40,46 @@ export default async function CourseLessonsPage({
                 <AdminLessonItem key={lesson.id} lesson={lesson} />
               ))}
             </div>
-            <Link
-              href={`/admin/courses/${params.courseId}/lessons/new`}
-              className={buttonVariants({ variant: "outline", size: "sm" })}
-            >
-              Create lesson
-            </Link>
+            <form>
+              <SubmitButton
+                variant={"secondary"}
+                size={"sm"}
+                className="w-full"
+                formAction={async () => {
+                  "use server";
+                  const session = await getRequiredAuthSession();
+
+                  const courseId = params.courseId;
+
+                  await prisma.course.findFirstOrThrow({
+                    where: {
+                      id: courseId,
+                      creatorId: session.user.id,
+                    },
+                  });
+
+                  const newLesson = await prisma.lesson.create({
+                    data: {
+                      name: "New lesson",
+                      course: {
+                        connect: {
+                          id: courseId,
+                        },
+                      },
+                      rank: "aaa",
+                      state: "HIDDEN",
+                      content: "## New lesson content",
+                    },
+                  });
+
+                  redirect(
+                    `/admin/courses/${courseId}/lessons/${newLesson.id}`
+                  );
+                }}
+              >
+                Create lesson
+              </SubmitButton>
+            </form>
           </CardContent>
         </Card>
       </LayoutContent>
