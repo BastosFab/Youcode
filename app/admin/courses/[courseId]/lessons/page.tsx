@@ -4,11 +4,12 @@ import {
   LayoutHeader,
   LayoutTitle,
 } from "@/components/layout/layout";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getRequiredAuthSession } from "@/lib/auth";
-import { getCourseLessons } from "./lessons.query";
+import Link from "next/link";
 import { AdminLessonItem } from "./AdminLessonItem";
+import { getCourseLessons } from "./lessons.query";
 
 export default async function CourseLessonsPage({
   params,
@@ -38,9 +39,12 @@ export default async function CourseLessonsPage({
                 <AdminLessonItem key={lesson.id} lesson={lesson} />
               ))}
             </div>
-            <Button variant={"outline"} size={"sm"}>
+            <Link
+              href={`/admin/courses/${params.courseId}/lessons/new`}
+              className={buttonVariants({ variant: "outline", size: "sm" })}
+            >
               Create lesson
-            </Button>
+            </Link>
           </CardContent>
         </Card>
       </LayoutContent>
