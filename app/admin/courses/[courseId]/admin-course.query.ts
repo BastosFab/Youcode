@@ -27,9 +27,8 @@ export const getAdminCourse = async ({
           id: true,
           user: {
             select: {
-              id: true,
-              name: true,
               email: true,
+              id: true,
               image: true,
             },
           },

@@ -20,6 +20,17 @@ import { getRequiredAuthSession } from "@/lib/auth";
 import Link from "next/link";
 import { getAdminCourse } from "./admin-course.query";
 import { PaginationButton } from "@/components/features/pagination/PaginationButton";
+import { Menu } from "lucide-react";
+import { Badge, BadgeProps } from "@/components/ui/badge";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { useMutation } from "@tanstack/react-query";
+import prisma from "@/lib/prisma";
+import { revalidatePath } from "next/cache";
 
 export default async function CoursePage({
   params,
@@ -67,11 +78,11 @@ export default async function CoursePage({
                   <TableRow>
                     <TableCell className="font-medium">
                       <Avatar className="rounded-full">
-                        <AvatarFallback>{user.name?.[0]}</AvatarFallback>
+                        <AvatarFallback>{user.email?.[0]}</AvatarFallback>
                         {user.image && (
                           <AvatarImage
                             src={user.image}
-                            alt={user.name ?? "user picture"}
+                            alt={user.email ?? "user picture"}
                           />
                         )}
                       </Avatar>
@@ -84,6 +95,67 @@ export default async function CoursePage({
                       >
                         {user.email}
                       </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Badge
+                        variant={user.canceled ? "success" : "destructive"}
+                      >
+                        {user.canceled ? "Active" : "Canceled"}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant={"ghost"} size={"sm"}>
+                            <Menu />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent>
+                          <DropdownMenuItem asChild>
+                            <form>
+                              <button
+                                formAction={async () => {
+                                  "use server";
+
+                                  const session =
+                                    await getRequiredAuthSession();
+
+                                  const userId = user.id;
+                                  const courseId = params.courseId;
+
+                                  const courseOnUser =
+                                    await prisma.courseOnUser.findFirst({
+                                      where: {
+                                        userId,
+                                        course: {
+                                          id: courseId,
+                                          creatorId: session.user.id,
+                                        },
+                                      },
+                                    });
+
+                                  if (!courseOnUser) return;
+
+                                  await prisma.courseOnUser.update({
+                                    where: {
+                                      id: courseOnUser.id,
+                                    },
+                                    data: {
+                                      canceledAt: courseOnUser.canceledAt
+                                        ? null
+                                        : new Date(),
+                                    },
+                                  });
+
+                                  revalidatePath(`/admin/courses/${courseId}`);
+                                }}
+                              >
+                                {user.canceled ? "Cancel" : "Activate"}
+                              </button>
+                            </form>
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
                     </TableCell>
                   </TableRow>
                 ))}

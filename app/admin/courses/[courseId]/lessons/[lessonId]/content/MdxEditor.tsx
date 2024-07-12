@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import InitializedMDXEditor from "./InitializedMDXEditor";
 import { lessonActionEditContent } from "../lesson.action";
-import { BadgeProps } from "@/components/ui/badge";
+import { Badge, BadgeProps } from "@/components/ui/badge";
 import { toast } from "sonner";
 
 export type MdxEditorProps = {
@@ -13,7 +13,9 @@ export type MdxEditorProps = {
 
 type SyncState = "sync" | "not-sync" | "syncing";
 
-export const BadgeVariants = (syncState: SyncState): BadgeProps["variant"] => {
+export const getBadgeVariant = (
+  syncState: SyncState
+): BadgeProps["variant"] => {
   if (syncState === "sync") {
     return "default";
   }
@@ -62,12 +64,17 @@ export const MdxEditor = ({ lessonId, markdown }: MdxEditorProps) => {
   }, [syncState]);
 
   return (
-    <InitializedMDXEditor
-      onChange={(value) => {
-        setSyncState("not-sync");
-        onChange(value);
-      }}
-      markdown={markdown}
-    />
+    <div className="relative">
+      <div className="absolute bottom-2 right-2 z-10">
+        <Badge variant={getBadgeVariant(syncState)}>{syncState}</Badge>
+      </div>
+      <InitializedMDXEditor
+        onChange={(v) => {
+          setSyncState("not-sync");
+          onChange(v);
+        }}
+        markdown={markdown}
+      />
+    </div>
   );
 };

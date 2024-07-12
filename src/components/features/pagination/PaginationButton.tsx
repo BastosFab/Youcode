@@ -16,6 +16,8 @@ export const PaginationButton = (props: PaginationButtonProps) => {
     <div className="mt-2 flex justify-between">
       <Button
         variant={"outline"}
+        size={"sm"}
+        disabled={props.page === 0}
         onClick={() => {
           const searchParams = new URLSearchParams({
             page: String(props.page - 1),
@@ -28,6 +30,8 @@ export const PaginationButton = (props: PaginationButtonProps) => {
       </Button>
       <Button
         variant={"outline"}
+        size={"sm"}
+        disabled={props.page === props.totalPage}
         onClick={() => {
           const searchParams = new URLSearchParams({
             page: String(props.page + 1),
