@@ -80,8 +80,8 @@ export const getCourse = async ({
 
   return {
     ...course,
-    isEnrolled: course.users.length > 0 && course.users[0].canceledAt,
-    isCancelled: course.users.length > 0 && course.users[0].canceledAt,
+    isEnrolled: course.users.length > 0 && !course.users[0].canceledAt,
+    isCancelled: course.users.length > 0 && !!course.users[0].canceledAt,
     lessons,
   };
 };
