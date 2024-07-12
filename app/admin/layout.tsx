@@ -1,12 +1,10 @@
 "use client";
 
-import { Breadcrumb } from "@/components/utils/Breadcrumb";
 import { BackButton } from "@/components/utils/BackButton";
-import { useRouter } from "next/navigation";
+import { Breadcrumb } from "@/components/utils/Breadcrumb";
 import { PropsWithChildren } from "react";
 
 export default function AdminLayout({ children }: PropsWithChildren) {
-  const router = useRouter();
   return (
     <>
       <div className="w-full border-b border-border/20">

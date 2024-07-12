@@ -8,9 +8,10 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getRequiredAuthSession } from "@/lib/auth";
 import prisma from "@/lib/prisma";
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { AdminLessonItem } from "./AdminLessonItem";
 import { getCourseLessons } from "./lessons.query";
+import { AdminLessonSortable } from "./AdminLessonSortable";
 
 export default async function CourseLessonsPage({
   params,
@@ -24,6 +25,10 @@ export default async function CourseLessonsPage({
     creatorId: sessions.user.id,
   });
 
+  if (!course) {
+    notFound();
+  }
+
   return (
     <Layout>
       <LayoutHeader>
@@ -36,9 +41,7 @@ export default async function CourseLessonsPage({
           </CardHeader>
           <CardContent className="flex flex-col gap-2">
             <div className="flex flex-col gap-1">
-              {course?.lessons.map((lesson) => (
-                <AdminLessonItem key={lesson.id} lesson={lesson} />
-              ))}
+              <AdminLessonSortable items={course.lessons} />
             </div>
             <form>
               <SubmitButton

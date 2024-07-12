@@ -52,11 +52,17 @@ model User {
   image         String?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
+  role          UserRole  @default(USER)
   accounts      Account[]
   sessions      Session[]
   ownedCourses   CourseOnUser[]
   createdCourses Course[]
   lessons        LessonOnUser[]
+}
+
+enum UserRole {
+  ADMIN
+  USER
 }
 
 model VerificationToken {
