@@ -9,6 +9,7 @@ import { getRequiredAuthSession } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import { CourseForm } from "./CourseForm";
+import { NotAuthorized } from "@/components/layout/NotAuthorized";
 
 export default async function EditCoursePage({
   params,
@@ -19,6 +20,10 @@ export default async function EditCoursePage({
 
   if (!session) {
     return <NotAuthentificatedCard />;
+  }
+
+  if (session.user.role !== "ADMIN") {
+    return <NotAuthorized />;
   }
 
   const course = await prisma.course.findUnique({

@@ -10,6 +10,7 @@ import { getAdminLesson } from "./admin-lesson.query";
 import { notFound } from "next/navigation";
 import { LessonDetailsForm } from "./form/LessonDetailsForm";
 import { MdxEditor } from "./content/MdxEditor";
+import { NotAuthorized } from "@/components/layout/NotAuthorized";
 
 export default async function LessonPage({
   params,
@@ -17,6 +18,10 @@ export default async function LessonPage({
   params: { lessonId: string };
 }) {
   const sessions = await getRequiredAuthSession();
+
+  if (sessions.user.role !== "ADMIN") {
+    return <NotAuthorized />;
+  }
 
   const lesson = await getAdminLesson({
     lessonId: params.lessonId,

@@ -9,9 +9,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getRequiredAuthSession } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import { notFound, redirect } from "next/navigation";
-import { AdminLessonItem } from "./AdminLessonItem";
-import { getCourseLessons } from "./lessons.query";
 import { AdminLessonSortable } from "./AdminLessonSortable";
+import { getCourseLessons } from "./lessons.query";
+import { NotAuthorized } from "@/components/layout/NotAuthorized";
 
 export default async function CourseLessonsPage({
   params,
@@ -19,6 +19,10 @@ export default async function CourseLessonsPage({
   params: { courseId: string };
 }) {
   const sessions = await getRequiredAuthSession();
+
+  if (sessions.user.role !== "ADMIN") {
+    return <NotAuthorized />;
+  }
 
   const course = await getCourseLessons({
     courseId: params.courseId,

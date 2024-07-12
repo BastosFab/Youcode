@@ -1,3 +1,4 @@
+import { NotAuthorized } from "@/components/layout/NotAuthorized";
 import {
   Layout,
   LayoutActions,
@@ -30,9 +31,9 @@ export default async function CoursesPage() {
     },
   });
 
-  // if (courses.length === 0) {
-  //   throw new Error("No crouses found");
-  // }
+  if (session.user.role !== "ADMIN") {
+    return <NotAuthorized />;
+  }
 
   return (
     <Layout>

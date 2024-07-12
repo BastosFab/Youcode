@@ -6,7 +6,6 @@ import {
 } from "next";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../pages/api/auth/[...nextauth]";
-import { redirect } from "next/navigation";
 
 type ParametersGetServerSession =
   | []
@@ -35,30 +34,7 @@ export const getRequiredAuthSession = async (
       email?: string;
       image?: string;
       name?: string;
+      role?: string;
     };
   };
 };
-
-// export const getRequiredAdminAuthSession = async (
-//   ...parameters: ParametersGetServerSession
-// ) => {
-//   const session = await getServerSession(...parameters, authOptions);
-
-//   if (!session?.user.id) {
-//     throw new Error("Unauthorized");
-//   }
-
-//   if (session.user.role !== "ADMIN") {
-//     redirect("/");
-//   }
-
-//   return session as {
-//     user: {
-//       id: string;
-//       email?: string;
-//       image?: string;
-//       name?: string;
-//       role?: string;
-//     };
-//   };
-// };

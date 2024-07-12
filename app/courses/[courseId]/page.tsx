@@ -4,16 +4,10 @@ import {
   LayoutHeader,
   LayoutTitle,
 } from "@/components/layout/layout";
-import { Typography } from "@/components/ui/Typography";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import React from "react";
-import { getCourse } from "./course.query";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { TriangleAlert } from "lucide-react";
 import { getRequiredAuthSession } from "@/lib/auth";
-import { Course } from "./Course";
 import { notFound } from "next/navigation";
+import { Course } from "./Course";
+import { getCourse } from "./course.query";
 
 export default async function CoursePage({
   params,
@@ -37,7 +31,7 @@ export default async function CoursePage({
         <LayoutTitle>Courses</LayoutTitle>
       </LayoutHeader>
       <LayoutContent className="">
-        <Course course={course} />
+        <Course course={course} userId={session.user.id} />
       </LayoutContent>
     </Layout>
   );

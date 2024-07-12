@@ -1,3 +1,4 @@
+import { PaginationButton } from "@/components/features/pagination/PaginationButton";
 import {
   Layout,
   LayoutContent,
@@ -6,8 +7,15 @@ import {
 } from "@/components/layout/layout";
 import { Typography } from "@/components/ui/Typography";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import {
   Table,
   TableBody,
@@ -17,20 +25,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { getRequiredAuthSession } from "@/lib/auth";
+import prisma from "@/lib/prisma";
+import { Menu } from "lucide-react";
+import { revalidatePath } from "next/cache";
 import Link from "next/link";
 import { getAdminCourse } from "./admin-course.query";
-import { PaginationButton } from "@/components/features/pagination/PaginationButton";
-import { Menu } from "lucide-react";
-import { Badge, BadgeProps } from "@/components/ui/badge";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { useMutation } from "@tanstack/react-query";
-import prisma from "@/lib/prisma";
-import { revalidatePath } from "next/cache";
+import { NotAuthorized } from "@/components/layout/NotAuthorized";
 
 export default async function CoursePage({
   params,
@@ -42,6 +42,10 @@ export default async function CoursePage({
   const page = Number(searchParams.page ?? 0);
 
   const session = await getRequiredAuthSession();
+
+  if (session.user.role !== "ADMIN") {
+    return <NotAuthorized />;
+  }
 
   const course = await getAdminCourse({
     courseId: params.courseId,
@@ -96,14 +100,14 @@ export default async function CoursePage({
                         {user.email}
                       </Typography>
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="text-right">
                       <Badge
-                        variant={user.canceled ? "success" : "destructive"}
+                        variant={user.canceled ? "destructive" : "success"}
                       >
-                        {user.canceled ? "Active" : "Canceled"}
+                        {user.canceled ? "Canceled" : "Active"}
                       </Badge>
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="text-right">
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                           <Button variant={"ghost"} size={"sm"}>
@@ -150,7 +154,7 @@ export default async function CoursePage({
                                   revalidatePath(`/admin/courses/${courseId}`);
                                 }}
                               >
-                                {user.canceled ? "Cancel" : "Activate"}
+                                {user.canceled ? "Activate" : "Cancel"}
                               </button>
                             </form>
                           </DropdownMenuItem>
