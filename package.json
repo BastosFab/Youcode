@@ -16,6 +16,7 @@
     "@dnd-kit/utilities": "^3.2.2",
     "@faker-js/faker": "^8.4.1",
     "@hookform/resolvers": "^3.9.0",
+    "@mdxeditor/editor": "^3.8.0",
     "@prisma/client": "^5.16.1",
     "@radix-ui/react-alert-dialog": "^1.1.1",
     "@radix-ui/react-avatar": "^1.1.0",

@@ -9,6 +9,7 @@ import { getRequiredAuthSession } from "@/lib/auth";
 import { getAdminLesson } from "./admin-lesson.query";
 import { notFound } from "next/navigation";
 import { LessonDetailsForm } from "./form/LessonDetailsForm";
+import { MdxEditor } from "./content/MdxEditor";
 
 export default async function LessonPage({
   params,
@@ -27,17 +28,25 @@ export default async function LessonPage({
   }
 
   return (
-    <Layout>
+    <Layout className="max-w-5xl">
       <LayoutHeader>
         <LayoutTitle>Lessons • {lesson?.name}</LayoutTitle>
       </LayoutHeader>
       <LayoutContent className="flex flex-col gap-4 lg:flex-row">
-        <Card className="flex-[2]">
+        <Card className="flex-1">
           <CardHeader>
             <CardTitle>Details</CardTitle>
           </CardHeader>
           <CardContent className="flex flex-col gap-2">
             <LessonDetailsForm defaultValues={lesson} />
+          </CardContent>
+        </Card>
+        <Card className="flex-[3]">
+          <CardHeader>
+            <CardTitle>Content</CardTitle>
+          </CardHeader>
+          <CardContent className="flex flex-col gap-2">
+            <MdxEditor lessonId={lesson.id} markdown={lesson.content} />
           </CardContent>
         </Card>
       </LayoutContent>
