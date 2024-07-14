@@ -2,7 +2,7 @@ import { useRef } from "react";
 
 export const useDebounceFn = <T extends unknown[]>(
   fn: (...args: T) => void,
-  delay: 500
+  delay = 500
 ) => {
   const timeoutRef = useRef<ReturnType<typeof setTimeout>>();
 

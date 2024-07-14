@@ -1,8 +1,5 @@
-import { Typography } from "@/components/ui/Typography";
-import { Circle, CircleCheck, CircleDashed } from "lucide-react";
-import Link from "next/link";
-import { CourseLessonItem } from "../../course.query";
 import { Skeleton } from "@/components/ui/skeleton";
+import { CircleDashed } from "lucide-react";
 
 export const LessonItemPlaceholder = () => {
   return (
