@@ -18,7 +18,6 @@ export const MdxProse = ({ markdown }: MdxProseProps) => {
           },
         }}
       />
-      ;
     </div>
   );
 };
