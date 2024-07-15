@@ -3,7 +3,6 @@
 import { authenticatedAction } from "@/lib/action";
 import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 import { z } from "zod";
 
 export const handleLessonState = authenticatedAction(

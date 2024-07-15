@@ -1,10 +1,7 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getAuthSession } from "@/lib/auth";
-import prisma from "@/lib/prisma";
-import React from "react";
-import { LessonItem } from "./LessonItem";
-import { getCourse } from "../course.query";
 import { notFound } from "next/navigation";
+import { getCourse } from "../course.query";
+import { LessonNavigationCard } from "./LessonNavigationCard";
 
 export type LessonsNavigationProps = {
   courseId: string;
@@ -23,16 +20,5 @@ export const LessonsNavigation = async ({
     notFound();
   }
 
-  return (
-    <Card className="max-w-xs flex-1">
-      <CardHeader>
-        <CardTitle>{course.name}</CardTitle>
-      </CardHeader>
-      <CardContent className="flex flex-col gap-2">
-        {course?.lessons.map((lesson) => (
-          <LessonItem key={lesson.id} lesson={lesson} />
-        ))}
-      </CardContent>
-    </Card>
-  );
+  return <LessonNavigationCard course={course} />;
 };

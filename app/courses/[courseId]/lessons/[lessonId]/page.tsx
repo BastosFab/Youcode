@@ -4,6 +4,7 @@ import { getRequiredAuthSession } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import { notFound, redirect } from "next/navigation";
 import { MdxProse } from "./MdxProse";
+import { OpenLessonNavigationButton } from "./OpenLessonNavigationButton";
 import { handleLessonState } from "./lesson.action";
 import { getLesson } from "./lesson.query";
 
@@ -51,12 +52,13 @@ export default async function page({
 
   return (
     <Card className="flex-1">
-      <CardHeader>
+      <CardHeader className="flex-row items-center gap-4 space-y-0">
+        <OpenLessonNavigationButton />
         <CardTitle>{lesson.name}</CardTitle>
       </CardHeader>
-      <CardContent className="flex flex-col gap-4">
+      <CardContent className="">
         <MdxProse markdown={lesson.content} />
-        <form className="m-auto flex max-w-2xl flex-row-reverse">
+        <form className="m-auto mt-4 flex max-w-2xl flex-row-reverse">
           <SubmitButton
             formAction={async () => {
               "use server";
