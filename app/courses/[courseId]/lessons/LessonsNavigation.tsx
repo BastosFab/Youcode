@@ -3,7 +3,7 @@ import { getAuthSession } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import React from "react";
 import { LessonItem } from "./LessonItem";
-import { getCourse } from "../../course.query";
+import { getCourse } from "../course.query";
 import { notFound } from "next/navigation";
 
 export type LessonsNavigationProps = {

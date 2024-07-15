@@ -4,7 +4,7 @@ import { Typography } from "@/components/ui/Typography";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { MarkdownProse } from "@/components/features/mdx/MarkdownProse";
-import { LessonItem } from "./lessons/[lessonId]/LessonItem";
+import { LessonItem } from "./lessons/LessonItem";
 import { SubmitButton } from "@/components/form/SubmitButton";
 import { getRequiredAuthSession } from "@/lib/auth";
 import prisma from "@/lib/prisma";

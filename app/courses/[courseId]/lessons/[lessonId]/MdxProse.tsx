@@ -12,7 +12,7 @@ const components = { Spoiler };
 
 export const MdxProse = ({ markdown }: MdxProseProps) => {
   return (
-    <div className="prose m-auto dark:prose-invert xl:prose-xl">
+    <article className="prose m-auto dark:prose-invert xl:prose-xl">
       <MDXRemote
         source={markdown}
         options={{
@@ -22,6 +22,6 @@ export const MdxProse = ({ markdown }: MdxProseProps) => {
         }}
         components={components}
       />
-    </div>
+    </article>
   );
 };
