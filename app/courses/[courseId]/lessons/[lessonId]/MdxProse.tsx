@@ -2,10 +2,13 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import rehypePrism from "rehype-prism-plus";
 
 import React from "react";
+import { Spoiler } from "../../../../admin/courses/[courseId]/lessons/[lessonId]/content/custom/Spoiler";
 
 export type MdxProseProps = {
   markdown: string;
 };
+
+const components = { Spoiler };
 
 export const MdxProse = ({ markdown }: MdxProseProps) => {
   return (
@@ -17,6 +20,7 @@ export const MdxProse = ({ markdown }: MdxProseProps) => {
             rehypePlugins: [rehypePrism],
           },
         }}
+        components={components}
       />
     </div>
   );

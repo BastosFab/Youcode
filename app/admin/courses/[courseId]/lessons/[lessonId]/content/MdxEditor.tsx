@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { lessonActionEditContent } from "../lesson.action";
 import InitializedMDXEditor from "./InitializedMDXEditor";
+import { ForwardRefEditor } from "./ForwardRefEditor";
 
 export type MdxEditorProps = {
   markdown: string;
@@ -67,12 +68,13 @@ export const MdxEditor = ({ lessonId, markdown }: MdxEditorProps) => {
       <div className="absolute bottom-2 right-2">
         <Badge variant={getBadgeVariant(syncState)}>{syncState}</Badge>
       </div>
-      <InitializedMDXEditor
+      <ForwardRefEditor
         onChange={(v) => {
           setSyncState("not-sync");
           onChange(v);
         }}
         markdown={markdown}
+        // editorRef={}
       />
     </div>
   );

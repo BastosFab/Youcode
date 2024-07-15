@@ -1,30 +1,79 @@
+/* eslint-disable react/no-children-prop */
 "use client";
-
+// InitializedMDXEditor.tsx
 import {
   BoldItalicUnderlineToggles,
+  Button,
   ChangeCodeMirrorLanguage,
   ConditionalContents,
+  CreateLink,
   DiffSourceToggleWrapper,
   InsertCodeBlock,
+  JsxComponentDescriptor,
+  ListsToggle,
   MDXEditor,
-  ShowSandpackInfo,
+  Separator,
   UndoRedo,
   codeBlockPlugin,
   codeMirrorPlugin,
   diffSourcePlugin,
   headingsPlugin,
+  insertJsx$,
+  jsxPlugin,
+  linkDialogPlugin,
   linkPlugin,
   listsPlugin,
   markdownShortcutPlugin,
   quotePlugin,
-  thematicBreakPlugin,
+  tablePlugin,
   toolbarPlugin,
+  usePublisher,
+  type MDXEditorMethods,
   type MDXEditorProps,
 } from "@mdxeditor/editor";
 import "@mdxeditor/editor/style.css";
+import type { ForwardedRef } from "react";
+import { MdxZodEditor } from "./custom/MdxZodEditor";
+import { Spoiler, SpoilerSchema } from "./custom/Spoiler";
 import styles from "./mdx-editor-theme.module.css";
 
-export default function InitializedMDXEditor({ ...props }: MDXEditorProps) {
+const jsxComponentDescriptors: JsxComponentDescriptor[] = [
+  {
+    name: "Spoiler",
+    kind: "flow",
+    props: [{ name: "id", type: "string" }],
+    hasChildren: true,
+    Editor: (props) => (
+      <MdxZodEditor schema={SpoilerSchema} {...props} children={Spoiler} />
+    ),
+  },
+];
+
+// a toolbar button that will insert a JSX element into the editor.
+const InsertSpoiler = () => {
+  const insertJsx = usePublisher(insertJsx$);
+  return (
+    <Button
+      onClick={() =>
+        insertJsx({
+          name: "Spoiler",
+          kind: "flow",
+          props: {
+            title: "Title",
+          },
+        })
+      }
+    >
+      Spoiler
+    </Button>
+  );
+};
+
+// Only import this to the next file
+export default function InitializedMDXEditor({
+  editorRef,
+  ...props
+}: { editorRef: ForwardedRef<MDXEditorMethods> } & MDXEditorProps) {
   return (
     <MDXEditor
       className={styles.theme}
@@ -32,45 +81,78 @@ export default function InitializedMDXEditor({ ...props }: MDXEditorProps) {
       plugins={[
         headingsPlugin(),
         listsPlugin(),
+        linkDialogPlugin(),
+        linkPlugin(),
         quotePlugin(),
+        tablePlugin(),
+        jsxPlugin({ jsxComponentDescriptors }),
+        markdownShortcutPlugin(),
         codeBlockPlugin({ defaultCodeBlockLanguage: "js" }),
         codeMirrorPlugin({
-          codeBlockLanguages: { js: "JavaScript", css: "CSS", jsx: "JSX" },
+          codeBlockLanguages: {
+            "": "None",
+            js: "JavaScript",
+            css: "CSS",
+            html: "HTML",
+            jsx: "JavaScript React",
+            tsx: "TypeScript React",
+            ts: "TypeScript",
+            bash: "Bash",
+            javascript: "JavaScript",
+            typescript: "TypeScript",
+            json: "JSON",
+            py: "Python",
+            java: "Java",
+            ruby: "Ruby",
+            go: "Go",
+            yaml: "YAML",
+            sh: "Shell",
+            sql: "SQL",
+            md: "Markdown",
+            xml: "XML",
+            php: "PHP",
+          },
         }),
-        thematicBreakPlugin(),
-        markdownShortcutPlugin(),
-        diffSourcePlugin(),
-        linkPlugin(),
-
+        diffSourcePlugin({
+          diffMarkdown: props.markdown,
+          viewMode: "rich-text",
+        }),
         toolbarPlugin({
           toolbarContents: () => (
-            <DiffSourceToggleWrapper>
-              <ConditionalContents
-                options={[
-                  {
-                    when: (editor) => editor?.editorType === "codeblock",
-                    contents: () => <ChangeCodeMirrorLanguage />,
-                  },
-                  {
-                    when: (editor) => editor?.editorType === "sandpack",
-                    contents: () => <ShowSandpackInfo />,
-                  },
-                  {
-                    fallback: () => (
-                      <>
-                        <UndoRedo />
-                        <BoldItalicUnderlineToggles />
-                        <InsertCodeBlock />
-                      </>
-                    ),
-                  },
-                ]}
-              />
-            </DiffSourceToggleWrapper>
+            <>
+              <DiffSourceToggleWrapper>
+                <UndoRedo />
+
+                <ConditionalContents
+                  options={[
+                    {
+                      when: (editor) => editor?.editorType === "codeblock",
+                      contents: () => <ChangeCodeMirrorLanguage />,
+                    },
+                    {
+                      fallback: () => (
+                        <>
+                          <Separator orientation="vertical" className="h-6" />
+                          <BoldItalicUnderlineToggles />
+                          <ListsToggle />
+                          <Separator orientation="vertical" className="h-6" />
+                          <CreateLink />
+                          <Separator orientation="vertical" className="h-6" />
+                          <InsertCodeBlock />
+                          <Separator orientation="vertical" className="h-6" />
+                          <InsertSpoiler />
+                        </>
+                      ),
+                    },
+                  ]}
+                />
+              </DiffSourceToggleWrapper>
+            </>
           ),
         }),
       ]}
       {...props}
+      ref={editorRef}
     />
   );
 }
